@@ -3,46 +3,31 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>블로그 자동화 | Blog Automation</title>
+<title>제주 블로그 AI 파트너 | Gemini Edition</title>
 <style>
-:root { --primary: #3b82f6; --bg: #0c1220; --card: #0f1929; --border: #1e293b; --text: #e2e8f0; --text-dim: #94a3b8; }
+:root { --primary: #4285f4; --bg: #0c1220; --card: #0f1929; --border: #1e293b; --text: #e2e8f0; --text-dim: #94a3b8; }
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-serif;font-size:14px;line-height:1.5}
-
-/* 상단 바 */
 #topbar{position:sticky;top:0;z-index:200;background:#080e1a;border-bottom:1px solid var(--border);padding:12px 20px;display:flex;align-items:center;gap:12px}
 .logo{font-weight:900;font-size:16px;color:#fff;letter-spacing:-0.5px}
-#ch-badge{font-size:11px;font-weight:700;padding:4px 10px;border-radius:12px;display:none}
-.auth-status{margin-left:auto; margin-right:15px; font-size:11px; color:#22c55e; font-weight:bold; background:rgba(34,197,94,0.1); padding:5px 12px; border-radius:20px; border:1px solid rgba(34,197,94,0.3); display:flex; align-items:center; gap:6px}
-.auth-dot{width:6px; height:6px; background:#22c55e; border-radius:50%; box-shadow:0 0 8px #22c55e}
+.auth-status{margin-left:auto; margin-right:15px; font-size:11px; color:#4285f4; font-weight:bold; background:rgba(66,133,244,0.1); padding:5px 12px; border-radius:20px; border:1px solid rgba(66,133,244,0.3); display:flex; align-items:center; gap:6px}
+.auth-dot{width:6px; height:6px; background:#4285f4; border-radius:50%; box-shadow:0 0 8px #4285f4}
 #steps{display:flex;gap:6px}.step-pill{padding:5px 14px;border-radius:20px;font-size:11px;font-weight:700;background:#0f172a;color:#475569;border:1px solid transparent}.step-pill.active{background:#1e3a8a;color:#fff;border-color:var(--primary)}.step-pill.done{background:#1d4ed8;color:#fff}
-
-/* 레이아웃 */
-#app{max-width:880px;margin:0 auto;padding:30px 20px}.page{display:none}.page.active{display:block}
+#app{max-width:880px;margin:0 auto;padding:30px 20px}.page{display:none;animation:fadeIn 0.3s ease}.page.active{display:block}@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 .box{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:24px;margin-bottom:16px}
 .box-title{font-size:12px;font-weight:800;color:var(--text-dim);letter-spacing:1px;text-transform:uppercase;margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between}
-
-/* 채널 선택 */
 #ch-grid{display:grid;grid-template-columns:repeat(auto-fit, minmax(180px, 1fr));gap:14px}
-.ch-card{background:var(--card);border:2px solid var(--border);border-radius:14px;padding:22px;cursor:pointer;transition:all 0.2s}
-.ch-card:hover{transform:translateY(-3px); border-color:#334155}.ch-card.sel{background:rgba(30,58,138,0.2)}
-.ch-emoji{font-size:28px;margin-bottom:10px}.ch-name{font-size:16px;font-weight:800;margin-bottom:4px}
-
-/* 업로드 리스트 */
-#upload-zone{border:2px dashed var(--border);border-radius:10px;padding:40px 20px;text-align:center;cursor:pointer;color:var(--text-dim);transition:all 0.2s;background:#080e1a}
-#upload-zone.dragover{border-color:var(--primary); background:rgba(59,130,246,0.05); color:var(--primary)}
+.ch-card{background:var(--card);border:2px solid var(--border);border-radius:14px;padding:22px;cursor:pointer;transition:all 0.2s}.ch-card:hover{transform:translateY(-3px); border-color:#334155}.ch-card.sel{background:rgba(30,58,138,0.2)}
+#upload-zone{border:2px dashed var(--border);border-radius:10px;padding:40px 20px;text-align:center;cursor:pointer;color:var(--text-dim);background:#080e1a}
+#upload-zone.dragover{border-color:var(--primary); background:rgba(66,133,244,0.05); color:var(--primary)}
 #uploads-list{margin-top:16px; display:grid; gap:10px}
 .upload-item{display:flex; align-items:center; gap:12px; background:#080e1a; border:1px solid var(--border); border-radius:10px; padding:12px 16px}
-.img-preview-mini{width:45px; height:45px; border-radius:6px; object-fit:cover; border:1px solid #334155}
+.img-preview-mini{width:45px; height:45px; border-radius:6px; object-fit:cover}
 .pos-select{background:#0f172a; color:#fff; border:1px solid #334155; border-radius:6px; font-size:12px; padding:6px 10px; cursor:pointer}
-
-/* 입력/버튼 */
 input[type=text], textarea{width:100%;background:#080e1a;border:1px solid var(--border);border-radius:8px;padding:12px 14px;color:#fff;font-size:14px;outline:none;margin-bottom:14px}
 .btn-row{display:flex;gap:10px;justify-content:space-between;margin-top:10px}
-.btn{border:none;border-radius:10px;padding:14px 28px;font-size:14px;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;gap:8px;color:#fff;transition:all 0.2s}
+.btn{border:none;border-radius:10px;padding:14px 28px;font-size:14px;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;gap:8px;color:#fff}
 .btn:disabled{opacity:0.3;cursor:not-allowed}.btn-ghost{background:var(--card);color:var(--text-dim);border:1px solid var(--border);border-radius:10px;padding:14px 24px;font-weight:700}
-
-/* 로딩/결과 */
 #loading{text-align:center;padding:80px 0;display:none}.spinner{width:40px;height:40px;border:4px solid var(--border);border-top-color:var(--primary);border-radius:50%;margin:0 auto 16px;animation:spin 1s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
 #result-area{display:none}
 pre.code{background:#080e1a;padding:20px;font-size:12px;line-height:1.7;white-space:pre-wrap;font-family:monospace;max-height:500px;overflow-y:auto}
@@ -54,9 +39,9 @@ pre.code{background:#080e1a;padding:20px;font-size:12px;line-height:1.7;white-sp
 <body>
 
 <div id="topbar">
-  <span class="logo">BLOG AI PARTNER</span>
-  <div id="ch-badge"></div>
-  <div class="auth-status"><span class="auth-dot"></span><span>CLAUDE SERVER CONNECTED</span></div>
+  <span class="logo">JEJU AI BLOGGER</span>
+  <div id="ch-badge" style="margin-left:10px"></div>
+  <div class="auth-status"><span class="auth-dot"></span><span>GEMINI 2.0 FLASH READY</span></div>
   <div id="steps">
     <span class="step-pill active" id="s-0">CHOOSE</span>
     <span class="step-pill" id="s-1">WRITE</span>
@@ -67,20 +52,16 @@ pre.code{background:#080e1a;padding:20px;font-size:12px;line-height:1.7;white-sp
 <div id="app">
   <div class="page active" id="page-ch">
     <div class="page-title">발행 채널을 선택하세요</div>
-    <div class="page-sub">블루님의 각 채널에 최적화된 어조와 구조로 생성됩니다.</div>
     <div id="ch-grid">
-      <div class="ch-card" data-id="musamamssim" data-color="#059669"><div class="ch-emoji">🌊</div><div class="ch-name">무사마씸제주</div><div class="ch-meta">워드프레스 뉴스형</div></div>
-      <div class="ch-card" data-id="doldamhouse" data-color="#2563eb"><div class="ch-emoji">🏡</div><div class="ch-name">돌담하우스</div><div class="ch-meta">뉴스룸/시공기록</div></div>
+      <div class="ch-card" data-id="musamamssim" data-color="#059669"><div class="ch-emoji">🌊</div><div class="ch-name">무사마씸제주</div><div class="ch-meta">워드프레스 뉴스</div></div>
+      <div class="ch-card" data-id="doldamhouse" data-color="#2563eb"><div class="ch-emoji">🏡</div><div class="ch-name">돌담하우스</div><div class="ch-meta">시공/건축 기록</div></div>
       <div class="ch-card" data-id="tistory" data-color="#d97706"><div class="ch-emoji">✍️</div><div class="ch-name">티스토리</div><div class="ch-meta">정보성 수익형</div></div>
-      <div class="ch-card" data-id="naver" data-color="#dc2626"><div class="ch-emoji">🍀</div><div class="ch-name">네이버 블로그</div><div class="ch-meta">친근한 일상/공유</div></div>
+      <div class="ch-card" data-id="naver" data-color="#dc2626"><div class="ch-emoji">🍀</div><div class="ch-name">네이버 블로그</div><div class="ch-meta">친근한 일상</div></div>
     </div>
-    <div style="display:flex;justify-content:flex-end;margin-top:24px">
-      <button class="btn" id="btn-next" disabled style="background:#334155">내용 입력하기 →</button>
-    </div>
+    <div style="display:flex;justify-content:flex-end;margin-top:24px"><button class="btn" id="btn-next" disabled style="background:#334155">다음 단계로 →</button></div>
   </div>
 
   <div class="page" id="page-form">
-    <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px"><span id="form-emoji" style="font-size:24px"></span><div id="form-ch-name" class="page-title"></div></div>
     <div class="box"><div class="box-title">📝 포스팅 기본 정보</div><div id="form-fields"></div></div>
     <div class="box">
       <div class="box-title">📎 이미지 업로드 및 위치 지정 <span id="img-count" style="color:var(--primary)">0장</span></div>
@@ -95,8 +76,8 @@ pre.code{background:#080e1a;padding:20px;font-size:12px;line-height:1.7;white-sp
   </div>
 
   <div class="page" id="page-result">
-    <div id="loading"><div class="spinner"></div><div id="load-text">최적화 본문을 작성 중입니다...</div></div>
-    <div id="error-box"></div>
+    <div id="loading"><div class="spinner"></div><div id="load-text">Gemini가 이미지를 분석하고 글을 작성 중입니다...</div></div>
+    <div id="error-box" style="display:none; color:red; padding:20px; text-align:center"></div>
     <div id="result-area">
       <div id="dl-bar">
         <button class="btn" id="dl-html" style="background:#dc6f00">🌐 HTML 다운로드</button>
@@ -105,7 +86,7 @@ pre.code{background:#080e1a;padding:20px;font-size:12px;line-height:1.7;white-sp
       <div class="box" style="padding:0">
         <div class="tab-bar">
           <button class="tab-btn active" data-tab="html">HTML</button>
-          <button class="tab-btn" data-tab="raw">RAW</button>
+          <button class="tab-btn" data-tab="raw">RAW LOG</button>
           <button id="btn-copy" style="margin-left:auto; background:none; border:none; color:var(--text-dim); cursor:pointer; padding:12px">📋 복사</button>
         </div>
         <div class="tab-pane active" id="pane-html"><pre class="code" id="view-html"></pre></div>
@@ -117,12 +98,11 @@ pre.code{background:#080e1a;padding:20px;font-size:12px;line-height:1.7;white-sp
 </div>
 
 <div id="preview-screen">
-  <div id="preview-bar"><span style="color:#fff;font-weight:bold">PREVIEW</span><button id="btn-close-pv" style="background:#ef4444;color:#fff;border:none;padding:10px 25px;border-radius:8px;cursor:pointer">CLOSE</button></div>
+  <div id="preview-bar"><span style="color:#fff;font-weight:bold">POST PREVIEW</span><button id="btn-close-pv" style="background:#ef4444;color:#fff;border:none;padding:10px 25px;border-radius:8px;cursor:pointer">닫기</button></div>
   <iframe id="preview-frame"></iframe>
 </div>
 
 <script>
-// 전역 상태
 const CH = {
   musamamssim:{label:'무사마씸제주',emoji:'🌊',color:'#059669'},
   doldamhouse:{label:'돌담하우스',emoji:'🏡',color:'#2563eb'},
@@ -132,91 +112,51 @@ const CH = {
 const POSITIONS = ["본문-자동", "썸네일(대표)", "인포그래픽", "상단(도입)", "중간(설명)", "하단(마무리)"];
 let S = { chId: null, form: {topic:''}, result: '', html: '', uploads: [] };
 
-// 유틸리티
 const $ = id => document.getElementById(id);
 const $$ = sel => document.querySelectorAll(sel);
 
-// 페이지 전환 로직 (ID를 직접 제어하도록 수정)
 function goToPage(pageId) {
-  // 모든 페이지 숨기기
   document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
-  // 선택한 페이지 보이기
   const target = document.getElementById(pageId);
   if(target) target.style.display = 'block';
-
-  // 스텝 바 업데이트
   const stepIdx = (pageId === 'page-ch') ? 0 : (pageId === 'page-form' ? 1 : 2);
   ['s-0', 's-1', 's-2'].forEach((id, idx) => {
     const pill = document.getElementById(id);
-    if(!pill) return;
-    pill.className = 'step-pill';
-    if(idx < stepIdx) pill.classList.add('done');
-    else if(idx === stepIdx) pill.classList.add('active');
+    if(pill) pill.className = 'step-pill' + (idx < stepIdx ? ' done' : idx === stepIdx ? ' active' : '');
   });
-  window.scrollTo(0,0);
 }
 
-// 1단계: 채널 선택 클릭 이벤트
 document.querySelectorAll('.ch-card').forEach(card => {
   card.addEventListener('click', () => {
-    // 테두리 초기화
     document.querySelectorAll('.ch-card').forEach(c => c.style.borderColor = 'var(--border)');
-    // 상태 업데이트
     S.chId = card.getAttribute('data-id');
     card.style.borderColor = CH[S.chId].color;
-    // 다음 버튼 활성화
-    const nextBtn = document.getElementById('btn-next');
-    nextBtn.disabled = false;
-    nextBtn.style.background = CH[S.chId].color;
+    $('btn-next').disabled = false;
+    $('btn-next').style.background = CH[S.chId].color;
   });
 });
 
-// 2단계 이동 버튼 클릭
-document.getElementById('btn-next').addEventListener('click', () => {
-  if(!S.chId) return;
+$('btn-next').addEventListener('click', () => {
   const ch = CH[S.chId];
+  $('ch-badge').textContent = ch.emoji + ' ' + ch.label;
+  $('ch-badge').style.cssText = `display:inline; color:${ch.color}; border:1px solid ${ch.color}; padding:4px 10px; border-radius:12px`;
   
-  // 상단 채널 표시
-  const badge = document.getElementById('ch-badge');
-  badge.textContent = ch.emoji + ' ' + ch.label;
-  badge.style.display = 'inline';
-  badge.style.color = ch.color;
-  badge.style.border = `1px solid ${ch.color}`;
-  
-  // 폼 헤더
-  document.getElementById('form-emoji').textContent = ch.emoji;
-  document.getElementById('form-ch-name').textContent = ch.label;
-
-  // 동적 입력 필드 생성
-  const fields = document.getElementById('form-fields');
-  fields.innerHTML = '';
-  ['주제(필수)', '핵심 키워드', '타겟 독자'].forEach((label, i) => {
-    const lbl = document.createElement('label');
-    lbl.className = 'field-label';
-    lbl.textContent = label;
-    const input = document.createElement('input');
-    input.type = 'text';
-    input.placeholder = label + '를 입력하세요';
-    
-    // 첫 번째 필드(주제) 입력 시 생성 버튼 활성화
-    if(i === 0) {
-      input.addEventListener('input', e => {
-        S.form.topic = e.target.value;
-        const genBtn = document.getElementById('btn-gen');
-        genBtn.disabled = !e.target.value.trim();
-        genBtn.style.background = e.target.value.trim() ? ch.color : '#334155';
-      });
-    }
+  const fields = $('form-fields'); fields.innerHTML = '';
+  ['포스팅 주제(필수)', '핵심 키워드', '타겟 독자'].forEach((l, i) => {
+    const lbl = document.createElement('label'); lbl.className = 'field-label'; lbl.textContent = l;
+    const input = document.createElement('input'); input.type = 'text'; input.placeholder = `${l}를 입력하세요`;
+    if(i===0) input.addEventListener('input', e => { 
+      S.form.topic = e.target.value; 
+      $('btn-gen').disabled = !e.target.value.trim(); 
+      $('btn-gen').style.background = e.target.value.trim() ? ch.color : '#334155'; 
+    });
     fields.append(lbl, input);
   });
-
   goToPage('page-form');
 });
 
-// 이미지 업로드 로직
-const zone = document.getElementById('upload-zone');
-const fileInput = document.getElementById('file-input');
-
+const zone = $('upload-zone');
+const fileInput = $('file-input');
 zone.addEventListener('click', () => fileInput.click());
 ['dragover', 'dragenter'].forEach(e => zone.addEventListener(e, ev => { ev.preventDefault(); zone.classList.add('dragover'); }));
 ['dragleave', 'drop'].forEach(e => zone.addEventListener(e, ev => { ev.preventDefault(); zone.classList.remove('dragover'); }));
@@ -252,76 +192,75 @@ function resizeImage(base64, maxWidth) {
 }
 
 function renderUploads() {
-  const list = document.getElementById('uploads-list');
-  list.innerHTML = '';
-  document.getElementById('img-count').textContent = S.uploads.length + '장';
+  const list = $('uploads-list'); list.innerHTML = '';
+  $('img-count').textContent = S.uploads.length + '장';
   S.uploads.forEach((u, i) => {
-    const div = document.createElement('div');
-    div.className = 'upload-item';
+    const div = document.createElement('div'); div.className = 'upload-item';
     const opts = POSITIONS.map(p => `<option value="${p}" ${u.pos===p?'selected':''}>${p}</option>`).join('');
-    div.innerHTML = `
-      <img src="${u.preview}" class="img-preview-mini">
-      <div style="flex:1; font-size:12px; color:var(--text-dim)">${u.name.slice(0,12)}..</div>
-      <select class="pos-select" onchange="S.uploads[${i}].pos=this.value">${opts}</select>
-      <span class="rm-btn" style="cursor:pointer; color:red; font-weight:bold" onclick="removeUpload(${i})">×</span>
-    `;
+    div.innerHTML = `<img src="${u.preview}" class="img-preview-mini"><div style="flex:1; font-size:12px">${u.name.slice(0,12)}..</div>
+      <select class="pos-select" onchange="S.uploads[${i}].pos=this.value">${opts}</select><span style="cursor:pointer; color:red; margin-left:10px" onclick="removeUpload(${i})">×</span>`;
     list.appendChild(div);
   });
 }
 window.removeUpload = i => { S.uploads.splice(i,1); renderUploads(); };
 
-// 생성 버튼 클릭
-document.getElementById('btn-gen').addEventListener('click', async () => {
+// ══ Gemini 생성 로직 ══
+$('btn-gen').addEventListener('click', async () => {
   goToPage('page-result');
-  document.getElementById('loading').style.display='block';
-  document.getElementById('result-area').style.display='none';
-  try {
-    const imgInfo = S.uploads.map((u, i) => `[IMG_${i+1}]: ${u.pos}`).join('\n');
-    const prompt = `[채널] ${CH[S.chId].label} 전문 에디터 모드.\n[주제] ${S.form.topic}\n[이미지 가이드]\n${imgInfo}\n본문에 <div class="image-slot">[IMG_번호]</div>를 배치해.\n반드시 \`\`\`html 블록으로 출력해.`;
+  $('loading').style.display='block'; $('result-area').style.display='none'; $('error-box').style.display='none';
 
-    const res = await fetch('/.netlify/functions/claude', {
+  try {
+    const imgGuide = S.uploads.map((u, i) => `[IMG_${i+1}]: 위치(${u.pos}), 파일명(${u.name})`).join('\n');
+    const prompt = `[채널] ${CH[S.chId].label} 전문 SEO 에디터로서 작성하세요. 
+    [주제] ${S.form.topic}
+    [이미지 배치 지침]
+    아래 이미지 태그들을 문맥에 맞는 가장 적절한 위치에 <div class="image-slot">[IMG_번호]</div> 형태로 배치하세요.
+    ${imgGuide}
+    [출력] 반드시 \`\`\`html 블록 내부에 본문을 작성하세요.`;
+
+    let parts = [{ text: prompt }];
+    S.uploads.forEach(u => {
+      parts.push({ inline_data: { mime_type: u.type, data: u.data } });
+    });
+
+    const res = await fetch('/.netlify/functions/gemini', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ messages: [{ role: 'user', content: S.uploads.length ? [...S.uploads.map(u=>({type:'image',source:{type:'base64',media_type:u.type,data:u.data}})), {type:'text', text:prompt}] : prompt }] })
+      body: JSON.stringify({ contents: [{ parts }] })
     });
+
     const data = await res.json();
-    S.result = data.content[0].text;
-    const hm = S.result.match(/```html\s*([\s\S]*?)\s*```/);
-    S.html = hm ? hm[1].trim() : 'HTML 추출 실패';
-    document.getElementById('view-html').textContent = S.html;
-    document.getElementById('view-raw').textContent = S.result;
-    document.getElementById('loading').style.display='none';
-    document.getElementById('result-area').style.display='block';
+    if (data.error) throw new Error(data.error.message);
+    
+    // Gemini 응답 파싱
+    const text = data.candidates[0].content.parts[0].text;
+    S.result = text;
+    const hm = text.match(/```html\s*([\s\S]*?)\s*```/);
+    S.html = hm ? hm[1].trim() : 'HTML 본문을 찾지 못했습니다.';
+    
+    $('view-html').textContent = S.html;
+    $('view-raw').textContent = S.result;
+    $('loading').style.display='none'; $('result-area').style.display='block';
   } catch (e) {
-    document.getElementById('loading').style.display='none';
-    const err = document.getElementById('error-box');
-    err.style.display='block';
-    err.textContent = '에러 발생: ' + e.message;
+    $('loading').style.display='none';
+    $('error-box').style.display='block';
+    $('error-box').textContent = '에러: ' + e.message;
   }
 });
 
-// 복사/미리보기/기타
-document.getElementById('btn-copy').addEventListener('click', () => {
-  const activeTab = document.querySelector('.tab-btn.active').dataset.tab;
-  const content = activeTab === 'html' ? S.html : S.result;
-  navigator.clipboard.writeText(content);
-  document.getElementById('btn-copy').textContent = '✅ 복사됨';
-  setTimeout(() => document.getElementById('btn-copy').textContent = '📋 복사', 1500);
+$('btn-copy').addEventListener('click', () => {
+  navigator.clipboard.writeText(document.querySelector('.tab-btn.active').dataset.tab === 'html' ? S.html : S.result);
+  $('btn-copy').textContent = '✅ 복사됨'; setTimeout(() => $('btn-copy').textContent = '📋 복사', 1500);
 });
-
-document.getElementById('btn-preview').addEventListener('click', () => {
-  document.getElementById('preview-frame').srcdoc = `<html><head><style>body{font-family:sans-serif;line-height:1.8;padding:40px;color:#333;max-width:800px;margin:0 auto} .image-slot{background:#f1f5f9; border:2px dashed #cbd5e1; padding:30px; text-align:center; margin:30px 0; color:#64748b; font-weight:bold; border-radius:12px;}</style></head><body>${S.html}</body></html>`;
-  document.getElementById('preview-screen').classList.add('open');
+$('btn-preview').addEventListener('click', () => {
+  $('preview-frame').srcdoc = `<html><head><style>body{font-family:sans-serif;line-height:1.8;padding:40px;color:#333;max-width:800px;margin:0 auto} .image-slot{background:#f1f5f9; border:2px dashed #cbd5e1; padding:30px; text-align:center; margin:30px 0; color:#64748b; font-weight:bold; border-radius:12px;}</style></head><body>${S.html}</body></html>`;
+  $('preview-screen').classList.add('open');
 });
-
-document.getElementById('btn-close-pv').addEventListener('click', () => document.getElementById('preview-screen').classList.remove('open'));
-document.getElementById('btn-back-ch').addEventListener('click', () => goToPage('page-ch'));
-
-document.querySelectorAll('.tab-btn').forEach(btn => btn.addEventListener('click', () => {
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-    document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
-    btn.classList.add('active');
-    document.getElementById('pane-' + btn.dataset.tab).classList.add('active');
+$('btn-close-pv').addEventListener('click', () => $('preview-screen').classList.remove('open'));
+$('btn-back-ch').addEventListener('click', () => goToPage('page-ch'));
+$$('.tab-btn').forEach(btn => btn.addEventListener('click', () => {
+    $$('.tab-btn').forEach(b => b.classList.remove('active')); $$('.tab-pane').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active'); $('pane-' + btn.dataset.tab).classList.add('active');
 }));
 </script>
 </body>
