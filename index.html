@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>블로그 자동화 | Blog Automation</title>
 <style>
-/* 디자인 시스템 */
 :root { --primary: #3b82f6; --bg: #0c1220; --card: #0f1929; --border: #1e293b; --text: #e2e8f0; --text-dim: #94a3b8; }
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-serif;font-size:14px;line-height:1.5}
@@ -17,9 +16,7 @@ html,body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans
 .logo{font-weight:900;font-size:16px;color:#fff;letter-spacing:-0.5px}
 #ch-badge{font-size:11px;font-weight:700;padding:4px 10px;border-radius:12px;display:none}
 .auth-status{margin-left:auto; margin-right:15px; font-size:11px; color:#22c55e; font-weight:bold; background:rgba(34,197,94,0.1); padding:5px 12px; border-radius:20px; border:1px solid rgba(34,197,94,0.3); display:flex; align-items:center; gap:6px}
-.auth-dot{width:6px; height:6px; background:#22c55e; border-radius:50%; box-shadow:0 0 8px #22c55e; animation:pulse 2s infinite}
-@keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
-
+.auth-dot{width:6px; height:6px; background:#22c55e; border-radius:50%; box-shadow:0 0 8px #22c55e}
 #steps{display:flex;gap:6px}.step-pill{padding:5px 14px;border-radius:20px;font-size:11px;font-weight:700;background:#0f172a;color:#475569;border:1px solid transparent}.step-pill.active{background:#1e3a8a;color:#fff;border-color:var(--primary)}.step-pill.done{background:#1d4ed8;color:#fff}
 
 /* 레이아웃 */
@@ -27,13 +24,13 @@ html,body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans
 .box{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:24px;margin-bottom:16px}
 .box-title{font-size:12px;font-weight:800;color:var(--text-dim);letter-spacing:1px;text-transform:uppercase;margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between}
 
-/* 채널 및 이미지 옵션 */
+/* 채널 선택 */
 #ch-grid{display:grid;grid-template-columns:repeat(auto-fit, minmax(180px, 1fr));gap:14px}
 .ch-card{background:var(--card);border:2px solid var(--border);border-radius:14px;padding:22px;cursor:pointer;transition:all 0.2s}
 .ch-card:hover{transform:translateY(-3px); border-color:#334155}.ch-card.sel{background:rgba(30,58,138,0.2)}
 .ch-emoji{font-size:28px;margin-bottom:10px}.ch-name{font-size:16px;font-weight:800;margin-bottom:4px}
 
-/* 업로드 영역 */
+/* 업로드 리스트 */
 #upload-zone{border:2px dashed var(--border);border-radius:10px;padding:40px 20px;text-align:center;cursor:pointer;color:var(--text-dim);transition:all 0.2s;background:#080e1a}
 #upload-zone.dragover{border-color:var(--primary); background:rgba(59,130,246,0.05); color:var(--primary)}
 #uploads-list{margin-top:16px; display:grid; gap:10px}
@@ -43,14 +40,14 @@ html,body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans
 
 /* 입력/버튼 */
 input[type=text], textarea{width:100%;background:#080e1a;border:1px solid var(--border);border-radius:8px;padding:12px 14px;color:#fff;font-size:14px;outline:none;margin-bottom:14px}
-input:focus{border-color:var(--primary)}
 .btn-row{display:flex;gap:10px;justify-content:space-between;margin-top:10px}
 .btn{border:none;border-radius:10px;padding:14px 28px;font-size:14px;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;gap:8px;color:#fff;transition:all 0.2s}
 .btn:disabled{opacity:0.3;cursor:not-allowed}.btn-ghost{background:var(--card);color:var(--text-dim);border:1px solid var(--border);border-radius:10px;padding:14px 24px;font-weight:700}
 
 /* 결과 */
-#loading{text-align:center;padding:80px 0;display:none}.spinner{width:40px;height:40px;border:4px solid var(--border);border-top-color:var(--primary);border-radius:50%;margin:0 auto 16px;animation:spin 1s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
+#loading{text-align:center;padding:80px 0;display:none}.spinner{width:40px;height:40px;border:4px solid var(--border);border-top-color:var(--primary);border-radius:50%;margin:0 auto 16px;animation:spin 1s linear infinite}
 #result-area{display:none}
+pre.code{background:#080e1a;padding:20px;font-size:12px;line-height:1.7;white-space:pre-wrap;font-family:monospace;max-height:500px;overflow-y:auto}
 #preview-screen{display:none;position:fixed;inset:0;z-index:9999;flex-direction:column;background:#000}#preview-screen.open{display:flex}
 #preview-bar{background:#080e1a;padding:15px 25px;display:flex;align-items:center;justify-content:space-between}
 #preview-frame{width:100%;border:none;flex:1;background:#fff}
@@ -63,23 +60,25 @@ input:focus{border-color:var(--primary)}
   <div id="ch-badge"></div>
   <div class="auth-status"><span class="auth-dot"></span><span>CLAUDE SERVER CONNECTED</span></div>
   <div id="steps">
-    <span class="step-pill active" id="s0">CHOOSE</span>
-    <span class="step-pill" id="s1">WRITE</span>
-    <span class="step-pill" id="s2">RESULT</span>
+    <span class="step-pill active" id="s-0">CHOOSE</span>
+    <span class="step-pill" id="s-1">WRITE</span>
+    <span class="step-pill" id="s-2">RESULT</span>
   </div>
 </div>
 
 <div id="app">
   <div class="page active" id="page-ch">
     <div class="page-title">발행 채널을 선택하세요</div>
-    <div class="page-sub">블루님의 각 채널에 최적화된 어조와 구조로 생성됩니다.</div>
+    <div class="page-sub">선택한 채널의 톤앤매너에 맞춰 AI가 글을 작성합니다.</div>
     <div id="ch-grid">
-      <div class="ch-card" data-id="musamamssim" data-color="#059669"><div class="ch-emoji">🌊</div><div class="ch-name">무사마씸제주</div><div class="ch-meta">워드프레스 뉴스형</div></div>
-      <div class="ch-card" data-id="doldamhouse" data-color="#2563eb"><div class="ch-emoji">🏡</div><div class="ch-name">돌담하우스</div><div class="ch-meta">뉴스룸/시공기록</div></div>
+      <div class="ch-card" data-id="musamamssim" data-color="#059669"><div class="ch-emoji">🌊</div><div class="ch-name">무사마씸제주</div><div class="ch-meta">워드프레스 뉴스</div></div>
+      <div class="ch-card" data-id="doldamhouse" data-color="#2563eb"><div class="ch-emoji">🏡</div><div class="ch-name">돌담하우스</div><div class="ch-meta">시공/건축 기록</div></div>
       <div class="ch-card" data-id="tistory" data-color="#d97706"><div class="ch-emoji">✍️</div><div class="ch-name">티스토리</div><div class="ch-meta">정보성 수익형</div></div>
-      <div class="ch-card" data-id="naver" data-color="#dc2626"><div class="ch-emoji">🍀</div><div class="ch-name">네이버 블로그</div><div class="ch-meta">친근한 일상/공유</div></div>
+      <div class="ch-card" data-id="naver" data-color="#dc2626"><div class="ch-emoji">🍀</div><div class="ch-name">네이버 블로그</div><div class="ch-meta">친근한 일상</div></div>
     </div>
-    <div style="display:flex;justify-content:flex-end;margin-top:24px"><button class="btn" id="btn-next" disabled style="background:#334155">내용 입력하기 →</button></div>
+    <div style="display:flex;justify-content:flex-end;margin-top:24px">
+      <button class="btn" id="btn-next" disabled style="background:#334155">내용 입력하기 →</button>
+    </div>
   </div>
 
   <div class="page" id="page-form">
@@ -89,9 +88,6 @@ input:focus{border-color:var(--primary)}
       <div id="upload-zone">📁 사진을 드래그하거나 클릭하여 추가하세요</div>
       <input type="file" id="file-input" accept="image/*" multiple style="display:none">
       <div id="uploads-list"></div>
-      <p style="margin-top:12px; font-size:11px; color:var(--text-dim); line-height:1.6">
-        * 업로드된 사진은 AI가 내용을 분석하여 지정하신 위치([상단], [중간] 등)에 맞춰 본문 흐름을 구성합니다.
-      </p>
     </div>
     <div class="btn-row">
       <button class="btn-ghost" id="btn-back-ch">← 채널 변경</button>
@@ -100,7 +96,7 @@ input:focus{border-color:var(--primary)}
   </div>
 
   <div class="page" id="page-result">
-    <div id="loading"><div class="spinner"></div><div id="load-text">이미지를 분석하고 SEO 최적화 본문을 작성 중입니다...</div></div>
+    <div id="loading"><div class="spinner"></div><div id="load-text">최적화 본문을 작성 중입니다...</div></div>
     <div id="error-box"></div>
     <div id="result-area">
       <div id="dl-bar">
@@ -111,23 +107,23 @@ input:focus{border-color:var(--primary)}
         <div class="tab-bar">
           <button class="tab-btn active" data-tab="html">HTML</button>
           <button class="tab-btn" data-tab="raw">RAW</button>
-          <button id="btn-copy" style="margin-left:auto; background:none; border:none; color:var(--text-dim); cursor:pointer; padding:12px">📋 내용 복사</button>
+          <button id="btn-copy" style="margin-left:auto; background:none; border:none; color:var(--text-dim); cursor:pointer; padding:12px">📋 복사</button>
         </div>
         <div class="tab-pane active" id="pane-html"><pre class="code" id="view-html"></pre></div>
         <div class="tab-pane" id="pane-raw"><pre class="code" id="view-raw"></pre></div>
       </div>
-      <button class="btn-ghost" onclick="location.reload()" style="margin-top:10px">🔄 처음부터 다시 만들기</button>
+      <button class="btn-ghost" onclick="location.reload()" style="margin-top:10px">🔄 처음부터 다시</button>
     </div>
   </div>
 </div>
 
 <div id="preview-screen">
-  <div id="preview-bar"><span style="color:#fff;font-weight:bold">POSTING PREVIEW</span><button id="btn-close-pv" style="background:#ef4444;color:#fff;border:none;padding:10px 25px;border-radius:8px;cursor:pointer;font-weight:bold">CLOSE</button></div>
+  <div id="preview-bar"><span style="color:#fff;font-weight:bold">PREVIEW</span><button id="btn-close-pv" style="background:#ef4444;color:#fff;border:none;padding:10px 25px;border-radius:8px;cursor:pointer">CLOSE</button></div>
   <iframe id="preview-frame"></iframe>
 </div>
 
 <script>
-// 환경 설정
+// 데이터 및 설정
 const CH = {
   musamamssim:{label:'무사마씸제주',emoji:'🌊',color:'#059669'},
   doldamhouse:{label:'돌담하우스',emoji:'🏡',color:'#2563eb'},
@@ -135,70 +131,90 @@ const CH = {
   naver:{label:'네이버 블로그',emoji:'🍀',color:'#dc2626'}
 };
 const POSITIONS = ["본문-자동", "썸네일(대표)", "인포그래픽", "상단(도입)", "중간(설명)", "하단(마무리)"];
-let S = { chId: null, form: {}, result: '', html: '', uploads: [] };
+let S = { chId: null, form: {topic:''}, result: '', html: '', uploads: [] };
+
 const $ = id => document.getElementById(id);
 const $$ = sel => document.querySelectorAll(sel);
 
-// 채널 선택
+// 공통 페이지 전환 함수 (버그 수정 포인트)
+function goToPage(pageId) {
+  $$('.page').forEach(p => p.classList.remove('active'));
+  $(pageId).classList.add('active');
+  
+  // 스텝 바 업데이트
+  const stepIdx = pageId === 'page-ch' ? 0 : pageId === 'page-form' ? 1 : 2;
+  [0, 1, 2].forEach(idx => {
+    const el = $(`s-${idx}`);
+    el.className = 'step-pill' + (idx < stepIdx ? ' done' : idx === stepIdx ? ' active' : '');
+  });
+}
+
+// 1. 채널 선택 이벤트
 $$('.ch-card').forEach(card => {
   card.addEventListener('click', () => {
-    $$('.ch-card').forEach(c => { c.classList.remove('sel'); c.style.borderColor = 'var(--border)'; });
-    S.chId = card.dataset.id; card.classList.add('sel'); card.style.borderColor = CH[S.chId].color;
-    $('btn-next').disabled = false; $('btn-next').style.background = CH[S.chId].color;
+    $$('.ch-card').forEach(c => c.style.borderColor = 'var(--border)');
+    S.chId = card.dataset.id;
+    card.style.borderColor = CH[S.chId].color;
+    $('btn-next').disabled = false;
+    $('btn-next').style.background = CH[S.chId].color;
   });
 });
 
-// 내용 입력창 이동
+// 2. 내용 입력창으로 이동
 $('btn-next').addEventListener('click', () => {
+  if(!S.chId) return;
   const ch = CH[S.chId];
   $('ch-badge').textContent = ch.emoji + ' ' + ch.label;
-  $('ch-badge').style.cssText = `display:inline; color:${ch.color}; background:rgba(255,255,255,0.05); border:1px solid ${ch.color}`;
+  $('ch-badge').style.cssText = `display:inline; color:${ch.color}; border:1px solid ${ch.color}; background:rgba(255,255,255,0.05)`;
   $('form-emoji').textContent = ch.emoji; $('form-ch-name').textContent = ch.label;
-  
+
   const fields = $('form-fields'); fields.innerHTML = '';
-  const list = ['주제(필수)', '핵심 키워드', '타겟 독자'];
-  list.forEach((l, i) => {
+  ['주제(필수)', '핵심 키워드', '타겟 독자'].forEach((l, i) => {
     const lbl = document.createElement('label'); lbl.className = 'field-label'; lbl.textContent = l;
     const input = document.createElement('input'); input.type = 'text'; input.placeholder = `${l}를 입력하세요`;
-    if(i===0) input.addEventListener('input', e => { S.form.topic = e.target.value; $('btn-gen').disabled = !e.target.value; $('btn-gen').style.background = e.target.value ? ch.color : '#334155'; });
+    if(i===0) input.addEventListener('input', e => { 
+        S.form.topic = e.target.value; 
+        $('btn-gen').disabled = !e.target.value.trim(); 
+        $('btn-gen').style.background = e.target.value.trim() ? ch.color : '#334155'; 
+    });
     fields.append(lbl, input);
   });
-  showPage('page-form');
+  goToPage('page-form');
 });
 
-// ══ 이미지 리사이징 및 업로드 ══
+// 3. 이미지 업로드 및 리사이징
 const zone = $('upload-zone');
 zone.addEventListener('click', () => $('file-input').click());
-['dragover', 'dragenter'].forEach(e => zone.addEventListener(e, (ev) => { ev.preventDefault(); zone.classList.add('dragover'); }));
-['dragleave', 'drop'].forEach(e => zone.addEventListener(e, (ev) => { ev.preventDefault(); zone.classList.remove('dragover'); }));
+['dragover', 'dragenter'].forEach(e => zone.addEventListener(e, ev => { ev.preventDefault(); zone.classList.add('dragover'); }));
+['dragleave', 'drop'].forEach(e => zone.addEventListener(e, ev => { ev.preventDefault(); zone.classList.remove('dragover'); }));
 zone.addEventListener('drop', e => handleFiles(e.dataTransfer.files));
 $('file-input').addEventListener('change', e => handleFiles(e.target.files));
 
 async function handleFiles(files) {
   for (let f of Array.from(files)) {
     if(!f.type.startsWith('image/')) continue;
-    const resizedData = await resizeImage(f, 1024); // 브라우저 사이드 리사이징 (너비 1024px 기준)
-    S.uploads.push({ name: f.name, data: resizedData.split(',')[1], type: f.type, pos: "본문-자동", preview: resizedData });
+    const reader = new FileReader();
+    reader.onload = async (e) => {
+      const resized = await resizeImage(e.target.result, 1024);
+      S.uploads.push({ name: f.name, data: resized.split(',')[1], type: f.type, pos: "본문-자동", preview: resized });
+      renderUploads();
+    };
+    reader.readAsDataURL(f);
   }
-  renderUploads();
 }
 
-function resizeImage(file, maxWidth) {
-  return new Promise((resolve) => {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const img = new Image();
-      img.onload = () => {
-        const canvas = document.createElement('canvas');
-        let width = img.width, height = img.height;
-        if (width > maxWidth) { height *= maxWidth / width; width = maxWidth; }
-        canvas.width = width; canvas.height = height;
-        canvas.getContext('2d').drawImage(img, 0, 0, width, height);
-        resolve(canvas.toDataURL('image/jpeg', 0.8)); // 80% 압축
-      };
-      img.src = e.target.result;
+function resizeImage(base64, maxWidth) {
+  return new Promise(res => {
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      let w = img.width, h = img.height;
+      if (w > maxWidth) { h *= maxWidth / w; w = maxWidth; }
+      canvas.width = w; canvas.height = h;
+      canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+      res(canvas.toDataURL('image/jpeg', 0.8));
     };
-    reader.readAsDataURL(file);
+    img.src = base64;
   });
 }
 
@@ -215,13 +231,13 @@ function renderUploads() {
 }
 window.removeUpload = i => { S.uploads.splice(i,1); renderUploads(); };
 
-// ══ 생성 및 미리보기 ══
+// 4. 생성 및 결과
 $('btn-gen').addEventListener('click', async () => {
-  showPage('page-result');
+  goToPage('page-result');
   $('loading').style.display='block'; $('result-area').style.display='none';
   try {
-    const imgInfo = S.uploads.map((u, i) => `[IMG_${i+1}]: ${u.pos}용 사진`).join('\n');
-    const prompt = `당신은 블루님의 든든한 AI 개발 파트너이자 전문 SEO 에디터입니다.\n[채널] ${CH[S.chId].label}\n[주제] ${S.form.topic}\n\n[이미지 배치 지시]\n${imgInfo}\n위 이미지들을 본문 적재적소에 <div class="image-slot">[IMG_번호] (설명)</div> 형태로 배치해줘.\n본문은 반드시 \`\`\`html 블록으로 출력해.`;
+    const imgInfo = S.uploads.map((u, i) => `[IMG_${i+1}]: ${u.pos}`).join('\n');
+    const prompt = `[채널] ${CH[S.chId].label} 전문 에디터 모드.\n[주제] ${S.form.topic}\n[이미지 가이드]\n${imgInfo}\n본문에 <div class="image-slot">[IMG_번호]</div>를 배치해.\n반드시 \`\`\`html 블록으로 출력해.`;
 
     const res = await fetch('/.netlify/functions/claude', {
       method: 'POST',
@@ -239,17 +255,19 @@ $('btn-gen').addEventListener('click', async () => {
   }
 });
 
+// 유틸リティ
+$('btn-copy').addEventListener('click', () => { navigator.clipboard.writeText($$('.tab-btn.active')[0].dataset.tab === 'html' ? S.html : S.result); $('btn-copy').textContent = '✅ 복사됨'; setTimeout(() => $('btn-copy').textContent = '📋 복사', 1500); });
 $('btn-preview').addEventListener('click', () => {
-  $('preview-frame').srcdoc = `<html><head><style>body{font-family:sans-serif;line-height:1.8;padding:40px;color:#333;max-width:800px;margin:0 auto} .image-slot{background:#f1f5f9; border:2px dashed #cbd5e1; padding:30px; text-align:center; margin:30px 0; color:#64748b; font-weight:bold; border-radius:12px; position:relative} .image-slot::after{content:'IMAGE AREA'; position:absolute; top:10px; left:10px; font-size:10px; opacity:0.5}</style></head><body>${S.html}</body></html>`;
+  $('preview-frame').srcdoc = `<html><head><style>body{font-family:sans-serif;line-height:1.8;padding:40px;color:#333;max-width:800px;margin:0 auto} .image-slot{background:#f1f5f9; border:2px dashed #cbd5e1; padding:30px; text-align:center; margin:30px 0; color:#64748b; font-weight:bold; border-radius:12px;}</style></head><body>${S.html}</body></html>`;
   $('preview-screen').classList.add('open');
 });
-
-// 공통 유틸
-$('btn-copy').addEventListener('click', () => { navigator.clipboard.writeText(document.querySelector('.tab-btn.active').dataset.tab === 'html' ? S.html : S.result); $('btn-copy').textContent = '✅ COPIED'; setTimeout(() => $('btn-copy').textContent = '📋 COPY', 1500); });
 $('btn-close-pv').addEventListener('click', () => $('preview-screen').classList.remove('open'));
-$('btn-back-ch').addEventListener('click', () => showPage('page-ch'));
-function showPage(id) { $$('.page').forEach(p => p.classList.remove('active')); $(id).classList.add('active'); }
-$$('.tab-btn').forEach(btn => btn.addEventListener('click', () => { $$('.tab-btn').forEach(b => b.classList.remove('active')); $$('.tab-pane').forEach(p => p.classList.remove('active')); btn.classList.add('active'); $('pane-' + btn.dataset.tab).classList.add('active'); }));
+$('btn-back-ch').addEventListener('click', () => goToPage('page-ch'));
+
+$$('.tab-btn').forEach(btn => btn.addEventListener('click', () => { 
+    $$('.tab-btn').forEach(b => b.classList.remove('active')); $$('.tab-pane').forEach(p => p.classList.remove('active')); 
+    btn.classList.add('active'); $('pane-' + btn.dataset.tab).classList.add('active'); 
+}));
 </script>
 </body>
 </html>
