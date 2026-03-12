@@ -6,7 +6,7 @@ export default async function handler(req, res) {
     const API_KEY = process.env.GEMINI_API_KEY;
     
     // 모델명을 'gemini-2.0-flash-001'로 풀 네임을 명시하는 것이 2026년 표준입니다.
-    const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-001:generateContent?key=${API_KEY}`;
+    const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${API_KEY}`;
 
     const response = await fetch(API_URL, {
       method: 'POST',
