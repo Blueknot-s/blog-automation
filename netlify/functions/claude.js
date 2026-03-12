@@ -1,47 +1,39 @@
-exports.handler = async (event) => {
+const fetch = require('node-fetch');
+
+exports.handler = async function(event, context) {
+  // POST 요청이 아니면 거절
   if (event.httpMethod !== "POST") {
     return { statusCode: 405, body: "Method Not Allowed" };
   }
 
   try {
-    const body = JSON.parse(event.body);
+    const { model, messages } = JSON.parse(event.body);
+    const API_KEY = process.env.ANTHROPIC_API_KEY; // Netlify 설정에서 등록한 키를 가져옴
 
-    // UI에서 전달한 apiKey 추출 (없으면 환경변수 fallback)
-    const apiKey = body.apiKey || process.env.ANTHROPIC_API_KEY;
-    if (!apiKey) {
-      return {
-        statusCode: 400,
-        body: JSON.stringify({ error: { message: "API 키를 입력해주세요." } }),
-      };
-    }
-
-    // apiKey는 Anthropic에 전달하지 않도록 제거
-    const { apiKey: _key, ...payload } = body;
-
-    const response = await fetch("https://api.anthropic.com/v1/messages", {
-      method: "POST",
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
-        "x-api-key": apiKey,
-        "anthropic-version": "2023-06-01",
+        'Content-Type': 'application/json',
+        'x-api-key': API_KEY,
+        'anthropic-version': '2023-06-01'
       },
-      body: JSON.stringify(payload),
+      body: JSON.stringify({
+        model: model || 'claude-3-7-sonnet-latest',
+        max_tokens: 4000,
+        messages: messages
+      })
     });
 
     const data = await response.json();
 
     return {
-      statusCode: response.status,
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
-      },
-      body: JSON.stringify(data),
+      statusCode: 200,
+      body: JSON.stringify(data)
     };
-  } catch (err) {
+  } catch (error) {
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: { message: err.message } }),
+      body: JSON.stringify({ error: error.message })
     };
   }
 };
