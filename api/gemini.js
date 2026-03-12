@@ -5,8 +5,8 @@ export default async function handler(req, res) {
     const { contents } = req.body;
     const API_KEY = process.env.GEMINI_API_KEY;
     
-    // 2026년 3월 기준, 2.0 시리즈 중 가장 접근성이 좋은 명칭입니다.
-    const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite:generateContent?key=${API_KEY}`;
+    // 모델명을 'gemini-2.0-flash-001'로 풀 네임을 명시하는 것이 2026년 표준입니다.
+    const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-001:generateContent?key=${API_KEY}`;
 
     const response = await fetch(API_URL, {
       method: 'POST',
@@ -17,9 +17,8 @@ export default async function handler(req, res) {
     const data = await response.json();
 
     if (data.error) {
-      // 만약 lite도 안 된다면 pro 버전으로 자동 우회 시도하는 로직을 넣었습니다.
       return res.status(200).json({ 
-        error: { message: `[구글 보고] ${data.error.message} (코드: ${data.error.code})` } 
+        error: { message: `[최종 확인 에러] ${data.error.message} (코드: ${data.error.code})` } 
       });
     }
 
