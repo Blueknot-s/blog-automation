@@ -124,11 +124,28 @@ pre.code{background:#080e1a;padding:18px;font-size:12px;line-height:1.7;white-sp
   <span id="ch-badge"></span>
   <div style="display:flex;align-items:center;gap:6px;margin-left:auto;margin-right:12px">
     <span style="font-size:11px;color:#475569;font-weight:600;white-space:nowrap">🔑 API Key</span>
-    <input type="password" id="api-key-input"
-      placeholder="sk-ant-api03-..."
-      style="width:220px;background:#0c1a2e;border:1px solid #1e3a5f;border-radius:7px;padding:6px 10px;color:#e2e8f0;font-size:12px;outline:none;font-family:monospace"
+    <input type="text" id="api-key-input"
+      placeholder="sk-ant-api03-... 붙여넣기 후 Enter"
+      autocomplete="off" spellcheck="false"
+      style="width:260px;background:#0c1a2e;border:1px solid #1e3a5f;border-radius:7px;padding:6px 10px;color:#e2e8f0;font-size:12px;outline:none;font-family:monospace"
       oninput="this.style.borderColor=this.value?'#2563eb':'#1e3a5f'"
+      onkeydown="if(event.key==='Enter'){document.getElementById('key-ok').click();}"
     >
+    <button id="key-ok"
+      onclick="(function(){
+        var v=document.getElementById('api-key-input').value.trim();
+        var s=document.getElementById('key-status');
+        if(v.startsWith('sk-ant')){
+          s.textContent='✅ 확인';s.style.color='#22c55e';s.style.display='inline';
+          setTimeout(()=>s.style.display='none',2000);
+        } else if(v) {
+          s.textContent='⚠️ 형식 확인';s.style.color='#f59e0b';s.style.display='inline';
+        }
+      })()"
+      style="background:#1e3a8a;border:none;border-radius:7px;padding:6px 12px;color:#fff;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap">
+      확인
+    </button>
+    <span id="key-status" style="font-size:11px;display:none"></span>
   </div>
   <div id="steps">
     <span class="step-pill active" id="s0">채널 선택</span>
