@@ -122,30 +122,28 @@ pre.code{background:#080e1a;padding:18px;font-size:12px;line-height:1.7;white-sp
   <span style="font-size:16px">📋</span>
   <span class="logo">Blog Automation</span>
   <span id="ch-badge"></span>
-  <div style="display:flex;align-items:center;gap:6px;margin-left:auto;margin-right:12px">
-    <span style="font-size:11px;color:#475569;font-weight:600;white-space:nowrap">🔑 API Key</span>
+  <div style="display:flex;align-items:center;gap:7px;margin-left:auto;margin-right:12px">
+    <span style="font-size:13px">🔑</span>
     <input type="text" id="api-key-input"
-      placeholder="sk-ant-api03-... 붙여넣기 후 Enter"
+      placeholder="API Key 붙여넣기"
       autocomplete="off" spellcheck="false"
-      style="width:260px;background:#0c1a2e;border:1px solid #1e3a5f;border-radius:7px;padding:6px 10px;color:#e2e8f0;font-size:12px;outline:none;font-family:monospace"
-      oninput="this.style.borderColor=this.value?'#2563eb':'#1e3a5f'"
-      onkeydown="if(event.key==='Enter'){document.getElementById('key-ok').click();}"
-    >
-    <button id="key-ok"
-      onclick="(function(){
-        var v=document.getElementById('api-key-input').value.trim();
+      style="width:240px;background:#0c1a2e;border:1px solid #1e3a5f;border-radius:7px;padding:6px 10px;color:#e2e8f0;font-size:12px;outline:none;font-family:monospace;transition:border-color .2s"
+      oninput="(function(v){
+        var el=document.getElementById('api-key-input');
         var s=document.getElementById('key-status');
-        if(v.startsWith('sk-ant')){
-          s.textContent='✅ 확인';s.style.color='#22c55e';s.style.display='inline';
-          setTimeout(()=>s.style.display='none',2000);
+        if(v.startsWith('sk-ant')&&v.length>20){
+          el.style.borderColor='#22c55e';
+          s.textContent='✅';s.style.display='inline';
         } else if(v) {
-          s.textContent='⚠️ 형식 확인';s.style.color='#f59e0b';s.style.display='inline';
+          el.style.borderColor='#f59e0b';
+          s.textContent='';s.style.display='none';
+        } else {
+          el.style.borderColor='#1e3a5f';
+          s.textContent='';s.style.display='none';
         }
-      })()"
-      style="background:#1e3a8a;border:none;border-radius:7px;padding:6px 12px;color:#fff;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap">
-      확인
-    </button>
-    <span id="key-status" style="font-size:11px;display:none"></span>
+      })(this.value)"
+    >
+    <span id="key-status" style="font-size:13px;display:none"></span>
   </div>
   <div id="steps">
     <span class="step-pill active" id="s0">채널 선택</span>
